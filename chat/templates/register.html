@@ -1,9 +1,33 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<!-- Textfield with Floating Label -->
+<script>
+    async function createUser() {
+        const username = document.getElementById('sample3');
+        const password1 = document.getElementById('sample4');
+        const password2 = document.getElementById('sample5');
+        if (username.value && password1.value === password2.value) {
+            let fd = new FormData();
+            fd.append('csrfmiddlewaretoken', document.querySelector('[name=csrfmiddlewaretoken]').value);
+            fd.append('username', username.value);
+            fd.append('password', password1.value);
+            try {
+                const response = await fetch('/register/', {
+                    method: 'POST',
+                    body: fd,
+                });
+                if(response.status === 404) {
+                    alert('Die Registrierung ist fehlgeschlagen');
+                }
+            } catch {
+                alert('Die Registrierung ist fehlgeschlagen');
+            }
+        }
+    }
 
-<form class="auth-form" action="/register/" method="post">
+</script>
+
+<form class="auth-form" onsubmit="createUser(); return false;" method="post">
     {% csrf_token %}
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
         <input name="username" class="mdl-textfield__input" type="text" id="sample3" required>

@@ -1,4 +1,4 @@
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
@@ -36,7 +36,7 @@ def register_view(request):
                 User.objects.create_user(username=username, password=password)
                 return HttpResponseRedirect('/login/')
             except:
-                response.update({'message': 'error'})
+                raise Http404('Invalid username or password')
         else:
             response.update({'message': 'error'})
     return render(request, 'register.html', response)

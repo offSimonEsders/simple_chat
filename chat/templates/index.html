@@ -7,7 +7,7 @@
     async function sendMessage() {
         let fd = new FormData();
         const messageinput = document.getElementById('messageinput');
-        fd.append('csrfmiddlewaretoken', document.querySelector('[name=csrfmiddlewaretoken]').value)
+        fd.append('csrfmiddlewaretoken', document.querySelector('[name=csrfmiddlewaretoken]').value);
         fd.append('message', messageinput.value);
         try {
             await fetch('/chat/', {
