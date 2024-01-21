@@ -27,16 +27,14 @@ def auth_view(request):
 
 
 def register_view(request):
-    response = { 'message': 'ok' }
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
         if (username and password):
             try:
                 User.objects.create_user(username=username, password=password)
-                return HttpResponseRedirect('/login/')
-            except:
+            except Exception as e:
                 raise Http404('Invalid username or password')
         else:
-            response.update({'message': 'error'})
-    return render(request, 'register.html', response)
+            raise Http404('Invalid username or password')
+    return render(request, 'register.html')
