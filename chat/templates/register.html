@@ -3,21 +3,23 @@
 
 <!-- Textfield with Floating Label -->
 
-<form action="/login/" class="auth-form" method="post">
+<form class="auth-form" action="/register/" method="post">
     {% csrf_token %}
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
         <input name="username" class="mdl-textfield__input" type="text" id="sample3" required>
-        <label class="mdl-textfield__label" for="sample3">Nutzername...</label>
+        <label class="mdl-textfield__label" for="sample3">Name...</label>
     </div>
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
         <input name="password" class="mdl-textfield__input" type="text" id="sample4" required>
-        <label class="mdl-textfield__label" for="sample3">Password...</label>
+        <label class="mdl-textfield__label" for="sample3">Passwort...</label>
     </div>
-    <!-- Accent-colored raised button with ripple -->
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input class="mdl-textfield__input" type="text" id="sample5" required>
+        <label class="mdl-textfield__label" for="sample3">Passwort...</label>
+    </div>
     <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-        Login
+        Button
     </button>
 </form>
-
 
 {% endblock %}
