@@ -1,7 +1,31 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<form action="/login/" class="auth-form" method="post">
+<script>
+    async function login() {
+        const username = document.getElementById('sample3');
+        const password = document.getElementById('sample4');
+        let fd = new FormData();
+        fd.append('csrfmiddlewaretoken', document.querySelector('[name=csrfmiddlewaretoken]').value);
+        fd.append('username', username.value);
+        fd.append('password', password.value);
+        try {
+            const response = await fetch('/login/', {
+                method: 'POST',
+                body: fd,
+            });
+            if(response.redirected === true) {
+                window.open('/chat/', target='_self');
+            } else {
+                 alert('Der Login ist fehlgeschlagen');
+            }
+        } catch {
+            alert('Der Login ist fehlgeschlagen');
+        }
+    }
+</script>
+
+<form onsubmit="login(); return false;" class="auth-form" method="post">
     {% csrf_token %}
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
         <input name="username" class="mdl-textfield__input" type="text" id="sample3" required>
