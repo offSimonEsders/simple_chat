@@ -3,6 +3,22 @@
 
 {% if request.user.is_authenticated %}
 
+<script>
+    async function sendMessage() {
+        let fd = new FormData();
+        fd.append('csrfmiddlewaretoken', document.querySelector('[name=csrfmiddlewaretoken]').value)
+        fd.append('message', document.getElementById('messageinput').value);
+        try {
+            await fetch('/chat/', {
+                method: 'POST',
+                body: fd
+            })
+        } catch {
+            alert('Fetch fehlgeschlagen');
+        }
+    }
+</script>
+
 <section class="chat-frame">
     {% for message in messages %}
     <div class="single-message">
@@ -13,10 +29,10 @@
 </section>
 
 <!-- Textfield with Floating Label -->
-<form class="chat-form" action=" " method="post">
+<form class="chat-form" onsubmit="sendMessage(); return false;" method="post">
     {% csrf_token %}
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-        <input name="message" class="mdl-textfield__input" type="text" id="sample3">
+        <input name="message" class="mdl-textfield__input" type="text" id="messageinput">
         <label class="mdl-textfield__label" for="sample3">Nachricht...</label>
     </div>
 
