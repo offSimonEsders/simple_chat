@@ -39,11 +39,22 @@
         <div class="page-content">
             <!-- Your content goes here -->
 
+            {% if request.user.is_authenticated %}
+
+            <section class="chat-frame">
+                {% for message in messages %}
+                <div class="single-message">
+                    <h1>{{ message.author }}:</h1>
+                    <p>{{ message.text }}</p>
+                </div>
+                {% endfor %}
+            </section>
+
             <!-- Textfield with Floating Label -->
-            <form class="chat-form" action="#">
+            <form class="chat-form" action=" " method="post">
                 {% csrf_token %}
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                    <input class="mdl-textfield__input" type="text" id="sample3">
+                    <input name="message" class="mdl-textfield__input" type="text" id="sample3">
                     <label class="mdl-textfield__label" for="sample3">Nachricht...</label>
                 </div>
 
@@ -54,6 +65,14 @@
 
             </form>
 
+            {% else %}
+            <section class="else">
+                <h2>Please log in!</h2>
+                <h3>For log in click <a href="/login">here</a></h3>
+            </section>
+
+            {% endif %}
+
         </div>
     </main>
 </div>
@@ -63,6 +82,39 @@
 </html>
 
 <style>
+    .chat-frame {
+        position: fixed;
+        height: 500px;
+        width: 300px;
+        padding: 10px;
+        border-radius: 15px;
+        background: #EEEEEE;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .single-message {
+        display: flex;
+        align-items: center;
+        min-height: 30px;
+
+        h1 {
+            margin: 0;
+            margin-right: 15px;
+            font-size: 20px;
+            color: magenta;
+            text-decoration: underline;
+        }
+
+        p {
+            margin: 0;
+            font-size: 16px;
+            word-break: break-word;
+        }
+
+    }
+
     .chat-form {
         display: flex;
         align-items: center;
@@ -83,4 +135,15 @@
         }
 
     }
+
+    .else {
+        position: fixed;
+        padding: 10px;
+        border-radius: 15px;
+        background: #EEEEEE;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
 </style>
