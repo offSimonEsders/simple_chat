@@ -1,4 +1,6 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from django.contrib.auth import authenticate, login
 
 from chat.models import Message, Chat
 
@@ -8,9 +10,16 @@ from chat.models import Message, Chat
 def index(request):
     if request.method == 'POST':
         print(f'Recived data {request.POST["message"]}')
-        Message.objects.create(text=request.POST["message"], chat=Chat.objects.get(id=2), author=request.user, receiver=request.user)
+        Message.objects.create(text=request.POST["message"], chat=Chat.objects.get(id=2), author=request.user,
+                               receiver=request.user)
     chatmessages = Message.objects.filter(chat__id=2)
     return render(request, 'index.html', {'messages': chatmessages})
 
+
 def auth_view(request):
+    if request.method == 'POST':
+        user = authenticate(username=request.POST['username'], password=request.POST['password'])
+        if(user):
+            login(request, user)
+            return HttpResponseRedirect('/chat/')
     return render(request, 'auth.html')

@@ -1,10 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% block content %}
 
-</body>
-</html>
+<!-- Textfield with Floating Label -->
+
+<form action="/login/" class="login-form" method="post">
+    {% csrf_token %}
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input name="username" class="mdl-textfield__input" type="text" id="sample3">
+        <label class="mdl-textfield__label" for="sample3">Nutzername...</label>
+    </div>
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input name="password" class="mdl-textfield__input" type="text" id="sample4">
+        <label class="mdl-textfield__label" for="sample3">Password...</label>
+    </div>
+    <!-- Accent-colored raised button with ripple -->
+    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+        Login
+    </button>
+</form>
+
+
+{% endblock %}

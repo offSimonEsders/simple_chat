@@ -1,149 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
-    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% block content %}
 
-<!-- Always shows a header, even in smaller screens. -->
-<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
-    <header class="mdl-layout__header">
-        <div class="mdl-layout__header-row">
-            <!-- Title -->
-            <span class="mdl-layout-title">Willkommen {{ request.user }}</span>
-            <!-- Add spacer, to align navigation to the right -->
-            <div class="mdl-layout-spacer"></div>
-            <!-- Navigation. We hide it in small screens. -->
-            <nav class="mdl-navigation mdl-layout--large-screen-only">
-                <a class="mdl-navigation__link" href="">Link</a>
-                <a class="mdl-navigation__link" href="">Link</a>
-                <a class="mdl-navigation__link" href="">Link</a>
-                <a class="mdl-navigation__link" href="">Link</a>
-            </nav>
-        </div>
-    </header>
-    <div class="mdl-layout__drawer">
-        <span class="mdl-layout-title">Title</span>
-        <nav class="mdl-navigation">
-            <a class="mdl-navigation__link" href="">Link</a>
-            <a class="mdl-navigation__link" href="">Link</a>
-            <a class="mdl-navigation__link" href="">Link</a>
-            <a class="mdl-navigation__link" href="">Link</a>
-        </nav>
+{% if request.user.is_authenticated %}
+
+<section class="chat-frame">
+    {% for message in messages %}
+    <div class="single-message">
+        <h1>{{ message.author }}:</h1>
+        <p>{{ message.text }}</p>
     </div>
-    <main class="mdl-layout__content">
-        <div class="page-content">
-            <!-- Your content goes here -->
+    {% endfor %}
+</section>
 
-            {% if request.user.is_authenticated %}
+<!-- Textfield with Floating Label -->
+<form class="chat-form" action=" " method="post">
+    {% csrf_token %}
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input name="message" class="mdl-textfield__input" type="text" id="sample3">
+        <label class="mdl-textfield__label" for="sample3">Nachricht...</label>
+    </div>
 
-            <section class="chat-frame">
-                {% for message in messages %}
-                <div class="single-message">
-                    <h1>{{ message.author }}:</h1>
-                    <p>{{ message.text }}</p>
-                </div>
-                {% endfor %}
-            </section>
+    <!-- Accent-colored raised button with ripple -->
+    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+        Nachricht senden
+    </button>
 
-            <!-- Textfield with Floating Label -->
-            <form class="chat-form" action=" " method="post">
-                {% csrf_token %}
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                    <input name="message" class="mdl-textfield__input" type="text" id="sample3">
-                    <label class="mdl-textfield__label" for="sample3">Nachricht...</label>
-                </div>
+</form>
 
-                <!-- Accent-colored raised button with ripple -->
-                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-                    Nachricht senden
-                </button>
+{% else %}
+<section class="else">
+    <h2>Please log in!</h2>
+    <h3>For log in click <a href="/login">here</a></h3>
+</section>
 
-            </form>
+{% endif %}
 
-            {% else %}
-            <section class="else">
-                <h2>Please log in!</h2>
-                <h3>For log in click <a href="/login">here</a></h3>
-            </section>
-
-            {% endif %}
-
-        </div>
-    </main>
-</div>
-
-
-</body>
-</html>
-
-<style>
-    .chat-frame {
-        position: fixed;
-        height: 500px;
-        width: 300px;
-        padding: 10px;
-        border-radius: 15px;
-        background: #EEEEEE;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
-
-    .single-message {
-        display: flex;
-        align-items: center;
-        min-height: 30px;
-
-        h1 {
-            margin: 0;
-            margin-right: 15px;
-            font-size: 20px;
-            color: magenta;
-            text-decoration: underline;
-        }
-
-        p {
-            margin: 0;
-            font-size: 16px;
-            word-break: break-word;
-        }
-
-    }
-
-    .chat-form {
-        display: flex;
-        align-items: center;
-        position: fixed;
-        gap: 25px;
-        bottom: 25px;
-        left: 50%;
-        transform: translateX(-50%);
-        padding: 5px 25px;
-        border-radius: 15px;
-        width: fit-content;
-        background: #EEEEEE;
-
-        input {
-            height: 27px;
-            border-radius: 8px;
-            background: #FFF;
-        }
-
-    }
-
-    .else {
-        position: fixed;
-        padding: 10px;
-        border-radius: 15px;
-        background: #EEEEEE;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
-
-</style>
+{% endblock %}
