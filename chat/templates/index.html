@@ -6,13 +6,22 @@
 <script>
     async function sendMessage() {
         let fd = new FormData();
+        const messageinput = document.getElementById('messageinput');
         fd.append('csrfmiddlewaretoken', document.querySelector('[name=csrfmiddlewaretoken]').value)
-        fd.append('message', document.getElementById('messageinput').value);
+        fd.append('message', messageinput.value);
         try {
             await fetch('/chat/', {
                 method: 'POST',
                 body: fd
-            })
+            });
+            const date = new Date();
+            document.querySelector('.chat-frame').innerHTML += `
+                <div class="single-message">
+                    <h1>${date.toLocaleDateString('en-DE', {month: 'short'})}. ${date.getDate()}, ${date.getFullYear()}:</h1>
+                    <p>${messageinput.value}</p>
+                </div>
+            `;
+            messageinput.value = '';
         } catch {
             alert('Fetch fehlgeschlagen');
         }
@@ -22,7 +31,7 @@
 <section class="chat-frame">
     {% for message in messages %}
     <div class="single-message">
-        <h1>{{ message.author }}:</h1>
+        <h1>{{ message.created_at }}:</h1>
         <p>{{ message.text }}</p>
     </div>
     {% endfor %}
